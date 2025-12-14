@@ -1,72 +1,110 @@
-
+ 
         document.addEventListener('DOMContentLoaded', function() {
-            const loginForm = document.getElementById('loginForm');
-            const loginNameInput = document.getElementById('loginName');
-            const loginPasswordInput = document.getElementById('loginPassword');
-            const messageDiv = document.getElementById('message');
+            const nameInput = document.getElementById('name');
+            const passwordInput = document.getElementById('password');
+            const generateBtn = document.getElementById('generateBtn');
+            const strengthFill = document.getElementById('strengthFill');
+            const form = document.getElementById('registerForm');
             
-            // Check if user data exists in localStorage
-            checkUserData();
+            // Password requirement elements
+            const reqLength = document.getElementById('reqLength');
+            const reqUpper = document.getElementById('reqUpper');
+            const reqLower = document.getElementById('reqLower');
+            const reqNumber = document.getElementById('reqNumber');
+            const reqSymbol = document.getElementById('reqSymbol');
             
-            // Login form submission
-            loginForm.addEventListener('submit', function(e) {
+            // Password strength checker
+            passwordInput.addEventListener('input', function() {
+                checkPasswordStrength(passwordInput.value);
+            });
+            
+            // Generate account (store in localStorage)
+            form.addEventListener('submit', function(e) {
                 e.preventDefault();
                 
-                const enteredName = loginNameInput.value.trim();
-                const enteredPassword = loginPasswordInput.value;
+                const name = nameInput.value.trim();
+                const password = passwordInput.value;
                 
-                // Get stored user data
-                const storedUserData = localStorage.getItem('userData');
-                
-                if (!storedUserData) {
-                    showMessage('No account found. Please create an account first.', 'error');
+                // Validate inputs
+                if (!name) {
+                    showToast('Please enter your name', 'error');
                     return;
                 }
                 
-                const storedUser = JSON.parse(storedUserData);
-                
-                // Check credentials
-                if (enteredName === storedUser.name && enteredPassword === storedUser.password) {
-                    // Set login status
-                    localStorage.setItem('isLoggedIn', 'true');
-                    localStorage.setItem('currentUser', storedUser.name);
-                    
-                    showMessage('Login successful! Redirecting to dashboard...', 'success');
-                    
-                    // Redirect to dashboard after 2 seconds
-                    setTimeout(function() {
-                        window.location.href = 'dashboard.html';
-                    }, 2000);
-                } else {
-                    showMessage('Invalid username or password. Please try again.', 'error');
-                    loginPasswordInput.value = '';
+                if (!isPasswordStrong(password)) {
+                    showToast('Password is not strong enough, please meet all requirements', 'error');
+                    return;
                 }
+                
+                // Store user data in localStorage
+                const userData = {
+                    name: name,
+                    password: password,
+                    timestamp: new Date().toISOString()
+                };
+                
+                localStorage.setItem('userData', JSON.stringify(userData));
+                showToast('Account generated successfully! Redirecting to login page...', 'success');
+                
+                // Redirect to login page after 2 seconds
+                setTimeout(function() {
+                    window.location.href = 'login.html';
+                }, 2000);
             });
             
-            // Function to check if user data exists
-            function checkUserData() {
-                const storedUserData = localStorage.getItem('userData');
+            // Function to check password strength
+            function checkPasswordStrength(password) {
+                const requirements = {
+                    length: password.length >= 8,
+                    upper: /[A-Z]/.test(password),
+                    lower: /[a-z]/.test(password),
+                    number: /[0-9]/.test(password),
+                    symbol: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)
+                };
                 
-                if (!storedUserData) {
-                    showMessage('No account found. Please create an account first.', 'error');
+                // Update requirement indicators
+                updateRequirement(reqLength, requirements.length);
+                updateRequirement(reqUpper, requirements.upper);
+                updateRequirement(reqLower, requirements.lower);
+                updateRequirement(reqNumber, requirements.number);
+                updateRequirement(reqSymbol, requirements.symbol);
+                
+                // Calculate strength score
+                const strengthScore = Object.values(requirements).filter(Boolean).length;
+                const strengthPercent = (strengthScore / 5) * 100;
+                
+                // Update strength bar
+                strengthFill.style.width = `${strengthPercent}%`;
+                
+                // Update color based on strength
+                if (strengthPercent <= 40) {
+                    strengthFill.style.backgroundColor = '#e74c3c'; // Red
+                } else if (strengthPercent <= 70) {
+                    strengthFill.style.backgroundColor = '#f39c12'; // Orange
                 } else {
-                    // Auto-fill username if available
-                    const storedUser = JSON.parse(storedUserData);
-                    loginNameInput.value = storedUser.name;
-                    loginNameInput.focus();
+                    strengthFill.style.backgroundColor = '#2ecc71'; // Green
+                }
+                
+                return requirements;
+            }
+            
+            // Function to update requirement indicator
+            function updateRequirement(element, isValid) {
+                if (isValid) {
+                    element.classList.remove('invalid');
+                    element.classList.add('valid');
+                    element.querySelector('i').className = 'fas fa-check';
+                } else {
+                    element.classList.remove('valid');
+                    element.classList.add('invalid');
+                    element.querySelector('i').className = 'fas fa-times';
                 }
             }
             
-            // Function to show messages
-            function showMessage(message, type) {
-                messageDiv.textContent = message;
-                messageDiv.className = 'message ' + type;
-                messageDiv.style.display = 'block';
-                
-                // Hide message after 5 seconds
-                setTimeout(function() {
-                    messageDiv.style.display = 'none';
-                }, 5000);
+            // Function to check if password is strong
+            function isPasswordStrong(password) {
+                const requirements = checkPasswordStrength(password);
+                return Object.values(requirements).every(req => req === true);
             }
             
             // Function to show toast notifications

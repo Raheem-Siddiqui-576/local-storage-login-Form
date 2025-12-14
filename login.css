@@ -1,4 +1,4 @@
-  
+
         * {
             margin: 0;
             padding: 0;
@@ -78,54 +78,6 @@
             box-shadow: 0 0 0 3px rgba(106, 17, 203, 0.1);
         }
         
-        .password-strength {
-            margin-top: 8px;
-            font-size: 0.85rem;
-            display: flex;
-            align-items: center;
-        }
-        
-        .strength-bar {
-            height: 5px;
-            flex-grow: 1;
-            background: #eee;
-            border-radius: 3px;
-            margin-left: 10px;
-            overflow: hidden;
-        }
-        
-        .strength-fill {
-            height: 100%;
-            width: 0%;
-            border-radius: 3px;
-            transition: width 0.3s, background-color 0.3s;
-        }
-        
-        .requirements {
-            font-size: 0.85rem;
-            color: #666;
-            margin-top: 10px;
-        }
-        
-        .requirement {
-            margin-bottom: 5px;
-            display: flex;
-            align-items: center;
-        }
-        
-        .requirement i {
-            margin-right: 8px;
-            font-size: 0.8rem;
-        }
-        
-        .requirement.valid i {
-            color: #2ecc71;
-        }
-        
-        .requirement.invalid i {
-            color: #e74c3c;
-        }
-        
         .btn {
             width: 100%;
             padding: 15px;
@@ -164,4 +116,24 @@
         
         .link-text a:hover {
             text-decoration: underline;
+        }
+        
+        .message {
+            text-align: center;
+            padding: 10px;
+            margin: 15px 0;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+        
+        .error {
+            background-color: #ffe6e6;
+            color: #cc0000;
+            border: 1px solid #ff9999;
+        }
+        
+        .success {
+            background-color: #e6ffe6;
+            color: #006600;
+            border: 1px solid #99ff99;
         }
