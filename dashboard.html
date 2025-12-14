@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-tachometer-alt"></i>
+            <h1>User Dashboard</h1>
+        </div>
+        
+        <div class="user-info">
+            <span id="userNameDisplay">User</span>
+            <button class="logout-btn" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="welcome-card">
+            <h2 id="welcomeHeading">Welcome!</h2>
+            <p>You have successfully logged in. This dashboard provides you with various options. You can view your profile, change settings, and do much more.</p>
+        </div>
+        
+        <div class="dashboard-grid">
+            <div class="card">
+                <div class="card-icon">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <h3>My Profile</h3>
+                <p>View and update your profile information. Manage your name, email, and other personal details.</p>
+                <button class="card-btn" onclick="showProfile()">View Profile</button>
+            </div>
+            
+            <div class="card">
+                <div class="card-icon">
+                    <i class="fas fa-cog"></i>
+                </div>
+                <h3>Settings</h3>
+                <p>Customize your account settings. Control notifications, privacy, and other preferences.</p>
+                <button class="card-btn" onclick="showSettings()">Open Settings</button>
+            </div>
+            
+            <div class="card">
+                <div class="card-icon">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <h3>Statistics</h3>
+                <p>View your account activities and usage statistics in charts and graphs.</p>
+                <button class="card-btn" onclick="showStatistics()">View Statistics</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>Login System © 2023 | You are secure until you logout</p>
+    </div>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>
